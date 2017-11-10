@@ -5,8 +5,6 @@ const User = require('./controllers/user.ctrl');
 module.exports = app => {
 
   //Auth Middleware
-  app.use((req, res, next) => {
-    next();
-  });
+  app.post('/login', (req, res, next) => { });
 
 };
