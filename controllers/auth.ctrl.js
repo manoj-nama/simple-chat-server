@@ -32,6 +32,11 @@ exports.authenticate = (req, res, next) => {
   });
 };
 
+exports.logout = (req, res) => {
+  Auth.remove({ id: req.user._id }).exec(() => { });
+  return res.status(200).send();
+};
+
 exports.login = (req, res, next) => {
   const { name, googleId, facebookId, email, phone, picture, username } = req.body;
 
@@ -94,7 +99,7 @@ function signup(user, req, res) {
 }
 
 function login(user, req, res) {
-  Auth.remove({ id: user._id });
+  Auth.remove({ id: user._id }).exec(() => { });
   generateToken(user, (err, token) => {
     if (err) {
       return res.status(400).send("Error registering user");
