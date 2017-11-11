@@ -9,8 +9,8 @@ module.exports = app => {
   // ------------------------------------------------------------------------
   // Auth APIs
   // ------------------------------------------------------------------------
-  app.post('/login', (req, res, next) => { });
-  app.get('/logout', Auth.authenticate, (req, res, next) => { });
+  app.post('/login', Auth.login);
+  app.get('/logout', Auth.authenticate, Auth.logout);
 
   // ------------------------------------------------------------------------
   // User APIs
