@@ -35,16 +35,23 @@ exports.authenticate = (req, res, next) => {
 exports.login = (req, res, next) => {
   const { name, googleId, facebookId, email, phone, picture, username } = req.body;
 
-  if (!email || !id) {
+  const query = [];
+  if (!email && !googleId && !facebookId) {
     return res.status(422).json({ msg: 'Required fields (Email / ID) missing' });
   }
 
+  if (email) {
+    query.push({ email });
+  }
+  if (googleId) {
+    query.push({ 'social.google': googleId });
+  }
+  if (facebookId) {
+    query.push({ 'social.facebook': facebookId });
+  }
+
   User.findOne({
-    '$or': [
-      { email },
-      { 'social.google': googleId },
-      { 'social.facebook': facebookId }
-    ]
+    '$or': query
   }).lean().exec((err, user) => {
     if (err || !user) {
       // Do a signup
@@ -56,13 +63,13 @@ exports.login = (req, res, next) => {
         socials['facebookId'] = facebookId;
       }
       user = {
-        name,
         email,
-        phone,
-        picture,
-        username,
-        socials
-      }
+        socials,
+        name: name || "",
+        phone: phone || "",
+        picture: picture || "",
+        username: username || email
+      };
       return signup(user, res, res);
     } else {
       // Do login
