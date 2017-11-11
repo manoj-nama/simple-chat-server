@@ -4,6 +4,9 @@ const async = require('async');
 const crypto = require('crypto');
 
 exports.authenticate = (req, res, next) => {
+
+  const token = req.headers.Authorization || req.headers.authorization;
+
   if (!token) {
     return res.status(400).send("Unauthorized");
   }
@@ -17,7 +20,7 @@ exports.authenticate = (req, res, next) => {
     if (!creds.id) {
       return cb(new Error("User not found"));
     }
-    User.findOne({ _id: id }).lean().exec(cb);
+    User.findOne({ _id: creds.id }).lean().exec(cb);
   });
 
   async.series(tasks, (err, user) => {
@@ -37,7 +40,7 @@ exports.logout = (req, res) => {
   return res.status(200).send();
 };
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   const { name, googleId, facebookId, email, phone, picture, username } = req.body;
 
   const query = [];
@@ -84,8 +87,8 @@ exports.login = (req, res, next) => {
 };
 
 function signup(user, req, res) {
-  const user = new User(user);
-  user.save((err, newUser) => {
+  const userToSave = new User(user);
+  userToSave.save((err, newUser) => {
     if (err) {
       return res.status(400).send("Error registering user");
     }

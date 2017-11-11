@@ -1,4 +1,3 @@
-const express = require('express');
 const Auth = require('./controllers/auth.ctrl');
 const User = require('./controllers/user.ctrl');
 const Insta = require('./controllers/insta.ctrl');
@@ -15,10 +14,10 @@ module.exports = app => {
   // ------------------------------------------------------------------------
   // User APIs
   // ------------------------------------------------------------------------
-  // fetches all users for exploration
+  // Fetches all users for exploration
   app.get('/users', Auth.authenticate, User.list);
   // Gets user info for specified user
-  // id: User _id or 'me'
+  // Params - id: User _id or 'me'
   app.get('/user/:id', Auth.authenticate, User.fetch);
 
   // ------------------------------------------------------------------------
@@ -28,11 +27,11 @@ module.exports = app => {
   app.get('/chat/threads', Auth.authenticate, (req, res, next) => { });
 
   // Fetched messages between the current & specified user
-  // id: User _id
+  // Params - id: User _id
   app.get('/chat/:id', Auth.authenticate, (req, res, next) => { });
 
   // Send a new message to specified user
-  // id: User _id
+  // Params - id: User _id
   app.post('/chat/:id', Auth.authenticate, (req, res, next) => { });
 
   // ------------------------------------------------------------------------
@@ -42,26 +41,26 @@ module.exports = app => {
   app.get('/insta/feeds', Auth.authenticate, (req, res, next) => { });
 
   // Fetches all the users following current user, or a specified user
-  // id: User _id or 'me'
+  // Params - id: User _id or 'me'
   app.get('/insta/following/:id', Auth.authenticate, (req, res, next) => { });
 
   // Fetches all the followers for current user, or a specified user
-  // id: User _id or 'me'
+  // Params - id: User _id or 'me'
   app.get('/insta/followers/:id', Auth.authenticate, (req, res, next) => { });
 
   // Fetches all the likes of current user
   app.get('/insta/posts/likes', Auth.authenticate, (req, res, next) => { });
 
   // Fetches posts for a user
-  // id: User _id or 'me'
+  // Params - id: User _id or 'me'
   app.get('/insta/posts/:id', Auth.authenticate, (req, res, next) => { });
 
   // Get an individual post
-  // id: Post _id
+  // Params - id: Post _id
   app.get('/insta/post/:id', Auth.authenticate, (req, res, next) => { });
 
   // Likes / remove like to/from a post
-  // id: Post _id
+  // Params - id: Post _id
   app.post('/insta/post/:id/like', Auth.authenticate, (req, res, next) => { });
 
   // Create a new Post, notifies all followers

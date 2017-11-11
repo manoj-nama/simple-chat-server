@@ -1,5 +1,5 @@
-const mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const UserSchema = new Schema({
   'social': {
@@ -19,5 +19,4 @@ UserSchema.index({ 'social.facebook': 1 });
 UserSchema.index({ 'createdAt': 1 });
 const UserModel = mongoose.model('Auth', UserSchema);
 
-export default UserModel;
-
+module.exports = UserModel;
