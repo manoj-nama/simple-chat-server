@@ -130,10 +130,8 @@ exports.thread = (req, res) => {
   tasks.push(cb => {
     Chat
       .find({
-        '$or': [
-          { to: id },
-          { from: id }
-        ]
+        'to': { '$in': [id, _id] },
+        'from': { '$in': [id, _id] }
       })
       .sort({ createdAt: -1 })
       .limit(+limit || 20)
@@ -156,11 +154,16 @@ exports.thread = (req, res) => {
 };
 
 exports.message = (req, res) => {
-  const { to, message, file } = req.body;
+  const { id } = req.params;
+  const { message, file } = req.body;
   const { _id } = req.user;
 
-  if (!to) {
+  if (!id) {
     return res.status(422).send('missing required parameter [to]');
+  }
+
+  if (id === _id) {
+    return res.status(400).send('Cannot send message to self');
   }
 
   if (!message && !file) {
@@ -168,7 +171,7 @@ exports.message = (req, res) => {
   }
 
   const msg = new Chat({
-    to,
+    'to': id,
     'from': _id,
     'message': message || "",
     'file': file || "",

@@ -2,8 +2,9 @@ const User = require('../models/user.model');
 
 exports.list = (req, res) => {
   const { limit, offset } = req.query;
+  const { _id } = req.user;
   User
-    .find({})
+    .find({ '_id': { '$ne': _id } }, { email: 1, name: 1, picture: 1 })
     .sort({ createdAt: -1 })
     .skip(+offset || 0)
     .limit(+limit || 20)
