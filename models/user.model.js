@@ -17,6 +17,6 @@ UserSchema.index({ 'email': 1 });
 UserSchema.index({ 'social.google': 1 });
 UserSchema.index({ 'social.facebook': 1 });
 UserSchema.index({ 'createdAt': 1 });
-const UserModel = mongoose.model('Auth', UserSchema);
+const UserModel = mongoose.model('User', UserSchema);
 
 module.exports = UserModel;

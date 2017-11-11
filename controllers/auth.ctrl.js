@@ -23,7 +23,7 @@ exports.authenticate = (req, res, next) => {
     User.findOne({ _id: creds.id }).lean().exec(cb);
   });
 
-  async.series(tasks, (err, user) => {
+  async.waterfall(tasks, (err, user) => {
     if (err) {
       return res.status(400).json(err);
     }
