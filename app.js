@@ -5,7 +5,9 @@ const app = express();
 const config = require('./config');
 const PORT = process.env.PORT || 8888;
 
-mongoose.connect(config.mongo.uri);
+mongoose.connect(config.mongo.uri, {
+  useMongoClient: true
+});
 
 app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({ extended: false }));
