@@ -15,9 +15,11 @@ module.exports = app => {
   // ------------------------------------------------------------------------
   // User APIs
   // ------------------------------------------------------------------------
+  // fetches all users for exploration
+  app.get('/users', Auth.authenticate, User.list);
   // Gets user info for specified user
   // id: User _id or 'me'
-  app.get('/user/:id', Auth.authenticate, (req, res, next) => { });
+  app.get('/user/:id', Auth.authenticate, User.fetch);
 
   // ------------------------------------------------------------------------
   // Chat APIs
