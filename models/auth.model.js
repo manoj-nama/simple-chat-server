@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose.Schema;
+const { Schema } = mongoose;
 
 const AuthSchema = new Schema({
   token: { type: String, required: true },
