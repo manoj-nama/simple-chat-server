@@ -29,7 +29,7 @@ module.exports = {
         "callback-return": "error",
         "camelcase": "off",
         "capitalized-comments": [
-            "error",
+            "off",
             "always"
         ],
         "class-methods-use-this": "error",

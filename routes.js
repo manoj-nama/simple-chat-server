@@ -1,7 +1,7 @@
 const Auth = require('./controllers/auth.ctrl');
 const User = require('./controllers/user.ctrl');
-const Insta = require('./controllers/insta.ctrl');
 const Chat = require('./controllers/chat.ctrl');
+// const Insta = require('./controllers/insta.ctrl');
 
 function niy(req, res) {
   return res.send("Not yet implemented");
