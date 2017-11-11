@@ -4,7 +4,6 @@ const async = require('async');
 const crypto = require('crypto');
 
 exports.authenticate = (req, res, next) => {
-
   const token = req.headers.Authorization || req.headers.authorization;
 
   if (!token) {
@@ -17,7 +16,7 @@ exports.authenticate = (req, res, next) => {
   });
 
   tasks.push((creds = {}, cb) => {
-    if (!creds.id) {
+    if (!(creds && creds.id)) {
       return cb(new Error("User not found"));
     }
     User.findOne({ _id: creds.id }).lean().exec(cb);
@@ -112,7 +111,7 @@ function login(user, req, res) {
 }
 
 function generateToken(user, callback) {
-  const token = crypto.createHmac('sha256', 'react-native').update(user._id).digest('hex');
+  const token = crypto.createHmac('sha256', 'react-native').update(user._id.toString()).digest('hex');
 
   const authToken = new Auth({
     token,

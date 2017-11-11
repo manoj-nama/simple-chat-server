@@ -95,6 +95,7 @@ exports.threads = (req, res) => {
           };
           threads[chat.order] = obj;
         });
+        return cb(null, threads);
       });
   });
 
@@ -107,7 +108,8 @@ exports.threads = (req, res) => {
 };
 
 exports.thread = (req, res) => {
-  const { id } = req.params.id;
+  const { id } = req.params;
+  const { _id } = req.user;
   const { limit, offset } = req.query || {};
   const tasks = [];
 
@@ -115,10 +117,8 @@ exports.thread = (req, res) => {
     Chat
       .update({
         'status': 'DELIVERED',
-        '$or': [
-          { to: id },
-          { from: id }
-        ]
+        'to': _id,
+        'from': id
       }, {
         '$set': {
           'status': 'READ'
