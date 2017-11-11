@@ -7,6 +7,7 @@ const AuthSchema = new Schema({
 });
 
 AuthSchema.index({ token: 1 });
+AuthSchema.index({ id: 1 });
 const AuthModel = mongoose.model('Auth', AuthSchema);
 
 export default AuthModel;
