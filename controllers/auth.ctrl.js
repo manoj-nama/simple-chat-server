@@ -67,7 +67,7 @@ exports.login = (req, res) => {
         socials['google'] = googleId
       }
       if (facebookId) {
-        socials['facebookId'] = facebookId;
+        socials['facebook'] = facebookId;
       }
       user = {
         email,

@@ -86,6 +86,7 @@ exports.threads = (req, res) => {
             user,
             'unread_count': chat.unread_count,
             'last_message': {
+              'from': chat.from,
               'message': chat.message,
               'file': chat.file || "",
               'time': chat.createdAt,
