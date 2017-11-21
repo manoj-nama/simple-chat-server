@@ -9,6 +9,7 @@
     "async": "^2.6.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
+    "expo-server-sdk": "^2.3.3",
     "express": "^4.16.2",
     "mongoose": "^4.13.1"
   }
