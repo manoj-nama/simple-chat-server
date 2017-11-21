@@ -1,6 +1,7 @@
 const Chat = require('../models/chat.model');
 const User = require('../models/user.model');
 const async = require('async');
+const Device = require('../controllers/device.ctrl');
 
 /*
 {
@@ -157,7 +158,7 @@ exports.thread = (req, res) => {
 exports.message = (req, res) => {
   const { id } = req.params;
   const { message, file } = req.body;
-  const { _id } = req.user;
+  const { _id, name, email } = req.user;
 
   if (!id) {
     return res.status(422).send('missing required parameter [to]');
@@ -184,6 +185,25 @@ exports.message = (req, res) => {
     if (err) {
       return res.status(400).send(err);
     }
+
+    Device.send(req.user, {
+      body: message,
+      title: `${name || email} sent a message`,
+      data: {
+        from: {
+          _id,
+          name,
+          email
+        }
+      }
+    }, (err, resp) => {
+      console.log("Push response");
+      console.log("--------------------------------------");
+      console.log(err);
+      console.log("--------------------------------------");
+      console.log(resp);
+      console.log("--------------------------------------");
+    });
 
     // TODO: send push here
     return res.status(200).json({

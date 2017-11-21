@@ -1,5 +1,7 @@
 const async = require('async');
 const Device = require('../models/device.model');
+const Expo = require('expo-server-sdk');
+const expo = new Expo();
 
 exports.register = (req, res) => {
   const { token } = req.body;
@@ -64,4 +66,53 @@ exports.register = (req, res) => {
       }
     }
   });
+}
+
+exports.send = (user, payload, callback) => {
+  const { _id } = user;
+  const tasks = [];
+  const { body, data, sound, title } = payload;
+
+  // fetch device token
+  tasks.push(cb => {
+    Device.findOne({ id: _id }).lean().exec(cb);
+  });
+
+  tasks.push((device, cb) => {
+    if (device && device.token) {
+      const message = {};
+      if (data) {
+        message.data = data;
+      }
+      if (body) {
+        message.body = body;
+      }
+      if (title) {
+        message.title = title;
+      }
+      if (sound) {
+        message.sound = sound;
+      }
+      return sendPush(device.token, message, cb);
+    } else {
+      return cb(null, { errors: { message: "No Registered token found" } });
+    }
+  });
+
+  async.waterfall(tasks, callback);
+};
+
+function sendPush(token, message, callback) {
+  if (!Expo.isExpoPushToken(token)) {
+    return callback(new Error("Invalid Token"));
+  }
+
+  message.to = token;
+  expo.sendPushNotificationAsync(message)
+    .then(reciept => {
+      return callback(null, reciept);
+    })
+    .catch(err => {
+      return callback(err);
+    });
 }
