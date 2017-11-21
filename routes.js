@@ -1,6 +1,7 @@
 const Auth = require('./controllers/auth.ctrl');
 const User = require('./controllers/user.ctrl');
 const Chat = require('./controllers/chat.ctrl');
+const Device = require('./controllers/device.ctrl');
 // const Insta = require('./controllers/insta.ctrl');
 
 function niy(req, res) {
@@ -81,6 +82,6 @@ module.exports = app => {
   // Device APIs
   // ------------------------------------------------------------------------
   // Registers a device for Push
-  app.post('/device', Auth.authenticate, niy);
+  app.post('/device', Auth.authenticate, Device.register);
 
 };
