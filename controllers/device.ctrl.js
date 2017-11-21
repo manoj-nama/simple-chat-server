@@ -6,6 +6,10 @@ exports.register = (req, res) => {
   const { _id } = req.user;
   const tasks = [];
 
+  if (!token) {
+    return res.status(400).send("Push/Device token in required! ");
+  }
+
   tasks.push(cb => {
     Device.findOne({
       id: _id
