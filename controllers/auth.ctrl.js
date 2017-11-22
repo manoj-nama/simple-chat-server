@@ -17,14 +17,14 @@ exports.authenticate = (req, res, next) => {
 
   tasks.push((creds = {}, cb) => {
     if (!(creds && creds.id)) {
-      return cb(new Error("User not found"));
+      return cb();
     }
     User.findOne({ _id: creds.id }).lean().exec(cb);
   });
 
   async.waterfall(tasks, (err, user) => {
     if (err) {
-      return res.status(400).json(err);
+      return res.status(400).send(err);
     }
     if (!user) {
       return res.status(403).send("Unauthorized");
@@ -35,8 +35,10 @@ exports.authenticate = (req, res, next) => {
 };
 
 exports.logout = (req, res) => {
-  Auth.remove({ id: req.user._id }).exec(() => { });
-  return res.status(200).send();
+  Auth.remove({ id: req.user._id }).exec(err => {
+    console.log(err);
+  });
+  return res.status(200).json({ success: true });
 };
 
 exports.login = (req, res) => {
@@ -44,7 +46,7 @@ exports.login = (req, res) => {
 
   const query = [];
   if (!email && !googleId && !facebookId) {
-    return res.status(422).json({ msg: 'Required fields (Email / ID) missing' });
+    return res.status(422).send('Required fields (Email / ID) missing');
   }
 
   if (email) {
